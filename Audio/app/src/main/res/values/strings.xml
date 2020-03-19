@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Deezer</string>
+    <string name="cover_image_view_content_description">Affiche l\'image de couverture de l\'album</string>
+    <string name="artist_tv_placeholder">Artist</string>
+    <string name="album_tv_placeholder">ALBUM NAME</string>
+    <string name="explicit_album_text">(E)</string>
+    <string name="album_release_placeholder">01/01/0101</string>
+    <string name="song_name_placeholder">Song name</string>
+    <string name="artist_name_placeholder">Artist 1 name</string>
+    <string name="song_number_placeholder">1.</string>
+</resources>

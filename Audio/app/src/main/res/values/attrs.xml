@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TrackListTopInfoView">
+        <attr name="cover" format="reference"/>
+        <attr name="artist" format="string"/>
+        <attr name="album" format="string"/>
+        <attr name="explicit" format="boolean"/>
+        <attr name="release_date" format="string"/>
+    </declare-styleable>
+</resources>
