@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    tools:context="view.ui.AlbumDetail">
-
-    <widgets.TrackListTopInfoView
-        android:id="@+id/track_list_header_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    tools:context="view.ui.AlbumListActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/track_list_songs_rv"
+            android:id="@+id/home_activity_albums_grid_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/dark"/>
+            android:layout_height="match_parent"/>
 
         <widgets.CustomStickBottomBar
-            android:id="@+id/detail_album_bottom_media_bar"
+            android:id="@+id/bottom_media_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:layout_gravity="bottom"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
             app:bottom_bar_cover="@drawable/default_cover_art"
             app:bottom_bar_album="UMLA"
             app:bottom_bar_artist="Alpha Wann"/>
 
     </FrameLayout>
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

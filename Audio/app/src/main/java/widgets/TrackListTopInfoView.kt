@@ -48,5 +48,4 @@ class TrackListTopInfoView (context: Context, attrs: AttributeSet) : ConstraintL
 
 
     }
-
 }

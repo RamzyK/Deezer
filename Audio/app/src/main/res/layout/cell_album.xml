@@ -14,7 +14,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/album_cover_placeholder" />
 
     <TextView
         android:id="@+id/album_name_tv"
@@ -22,9 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:textAlignment="center"
-        android:text="UNE MAIN LAVE L'AUTRE"
+        android:text="@string/album_name_placeholder"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

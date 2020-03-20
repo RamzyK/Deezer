@@ -24,7 +24,7 @@ class DeezerAlbumAdapter(clickListener: OnItemClicked) : RecyclerView.Adapter<De
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
         layoutInflater = LayoutInflater.from(parent.context)
-        val albumView = layoutInflater.inflate(R.layout.album_cell, parent, false)
+        val albumView = layoutInflater.inflate(R.layout.cell_album, parent, false)
         return AlbumViewHolder(albumView)
     }
 
@@ -43,16 +43,16 @@ class DeezerAlbumAdapter(clickListener: OnItemClicked) : RecyclerView.Adapter<De
 
     class AlbumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val albumCover = itemView.findViewById<ImageView>(R.id.album_cover_iv)
-        val albumName = itemView.findViewById<TextView>(R.id.album_name_tv)
+        private val albumCover = itemView.findViewById<ImageView>(R.id.album_cover_iv)
+        private val albumName = itemView.findViewById<TextView>(R.id.album_name_tv)
 
         fun bind(albums: Albums, listener: OnItemClicked){
             val url = albums.cover
-            albumName.setText(albums.title)
+            albumName.text = albums.title
             Glide.with(itemView)
                 .load(url)
                 .centerCrop()
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.default_cover_art)
                 .error(R.drawable.ic_launcher_foreground)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(albumCover)

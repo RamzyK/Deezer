@@ -8,3 +8,4 @@
         <attr name="release_date" format="string"/>
     </declare-styleable>
 </resources>
+

@@ -16,11 +16,9 @@ object DeezerClient {
     private var deezerServices: DeezerServices? = getApi()
     private const val BASE_URL = "https://api.deezer.com/2.0/"
     var deezerAlbums : MutableLiveData<DeezerAlbums> = MutableLiveData()
-        get() = field
     var deezerAlbumsTrackList : MutableLiveData<TrackListSongs> = MutableLiveData()
-        get() = field
 
-    fun getApi(): DeezerServices? {
+    private fun getApi(): DeezerServices? {
         if (deezerServices == null) {
             val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -61,5 +59,5 @@ object DeezerClient {
             })
 
     }
-
+    
 }

@@ -7,9 +7,6 @@ import androidx.lifecycle.ViewModel
 import network.client.DeezerClient
 import network.model.albums.Albums
 import network.model.tracklist.TrackListSongs
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class DeezerAlbumDetailViewModel : ViewModel() {
     lateinit var context : AppCompatActivity
