@@ -3,10 +3,9 @@ package network.model.albums
 import network.model.Artist
 import java.io.Serializable
 
-data class Albums(
+data class Alternative(
     val artist: Artist,
     val available: Boolean,
-    val alternative: Alternative?,
     val cover: String,
     val cover_big: String,
     val cover_medium: String,
@@ -18,7 +17,6 @@ data class Albums(
     val nb_tracks: Int,
     val record_type: String,
     val release_date: String,
-    val time_add: Int,
     val title: String,
     val tracklist: String,
     val type: String

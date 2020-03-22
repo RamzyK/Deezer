@@ -40,14 +40,12 @@ class DetailAlbumAdapter(clickListener: OnSongClicked) : RecyclerView.Adapter<De
         private val songPositionTv = itemView.findViewById<TextView>(R.id.song_pos_tv)
         private val songNameTv = itemView.findViewById<TextView>(R.id.song_name_tv)
         private val songArtistNameTv = itemView.findViewById<TextView>(R.id.artist_name_on_song_tv)
-        private val songDurationTv = itemView.findViewById<TextView>(R.id.song_duration_tv)
         //rivate val favSongIv = itemView.findViewById<ImageView>(R.id.fav_image_view)
 
         fun bind(song: Song, pos: Int, listener: OnSongClicked){
             songPositionTv.text = (pos + 1).toString()
             songNameTv.text = song.title_short
             songArtistNameTv.text = song.artist.name
-            songDurationTv.text = song.duration.toString()
 
             itemView.setOnClickListener{
                 listener.trackListSongClicked(song, pos)

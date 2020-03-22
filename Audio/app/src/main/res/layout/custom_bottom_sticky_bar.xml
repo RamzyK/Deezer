@@ -22,10 +22,12 @@
 
         <TextView
             android:id="@+id/bottom_sticky_bar_song_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="180dp"
             android:layout_height="30dp"
             android:text="@string/song_name_placeholder"
-            android:gravity="center"
+            android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/white"/>

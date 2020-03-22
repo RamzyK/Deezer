@@ -51,6 +51,7 @@ class AlbumDetail : AppCompatActivity(), OnSongClicked {
 
     private lateinit var trackListSongsListRv: RecyclerView
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_album)
@@ -123,7 +124,7 @@ class AlbumDetail : AppCompatActivity(), OnSongClicked {
             if(deezerMediaPlayer.getMediaPlayer().isPlaying){
                 bottomBarPlayPauseIv.setImageResource(R.drawable.ic_white_pause_48)
             }else{
-                bottomBarPlayPauseIv.setImageResource(R.drawable.ic_white_start_music_48)
+                bottomBarPlayPauseIv.setImageResource(R.drawable.ic_play_white_bottom_bar)
             }
         }else{
             bottomBar.visibility = View.INVISIBLE
@@ -144,15 +145,21 @@ class AlbumDetail : AppCompatActivity(), OnSongClicked {
                 Toast.makeText(context, "Une erreur est survenue !", Toast.LENGTH_LONG).show()
             }
         })
+
+        deezerMediaPlayer.isEndOfSongObservable.observe(this, Observer {
+            if(!this.isDestroyed){
+                setUpBottomStickBar()
+            }
+        })
     }
 
     private fun setListeners(){
         bottomBarPlayPauseIv.setOnClickListener{
             if(deezerMediaPlayer.getMediaPlayer().isPlaying){
-                deezerMediaPlayer.getMediaPlayer().pause()
-                bottomBarPlayPauseIv.setImageResource(R.drawable.ic_white_start_music_48)
+                deezerMediaPlayer.pauseSong()
+                bottomBarPlayPauseIv.setImageResource(R.drawable.ic_play_white_bottom_bar)
             }else{
-                deezerMediaPlayer.getMediaPlayer().start()
+                deezerMediaPlayer.playSongAgain()
                 bottomBarPlayPauseIv.setImageResource(R.drawable.ic_white_pause_48)
             }
         }
@@ -166,6 +173,7 @@ class AlbumDetail : AppCompatActivity(), OnSongClicked {
             deezerMediaPlayer.nextSong()
             setUpBottomStickBar()
         }
+
     }
 
     override fun trackListSongClicked(song: Song, pos: Int) {
@@ -180,4 +188,5 @@ class AlbumDetail : AppCompatActivity(), OnSongClicked {
         deezerMediaPlayer.playSong(song)
         setUpBottomStickBar()
     }
+
 }

@@ -11,7 +11,7 @@
     <string name="image_placeholder_for_sticky_bottom_bar">Image placeholder for sticky bottom bar</string>
     <string name="album_cover_placeholder">Album cover placeholder</string>
     <string name="album_name_placeholder">UNE MAIN LAVE L\'AUTRE</string>
-    <string name="song_duration_placeholder">3:00</string>
+    <string name="song_duration_placeholder">0:30</string>
     <string name="favorit_songe_song_icon">Favorit songe song icon</string>
     <string name="previous_song_icon">Previous song icon</string>
     <string name="pause_music_icon">Pause music icon</string>

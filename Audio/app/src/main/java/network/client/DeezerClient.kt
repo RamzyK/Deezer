@@ -2,6 +2,7 @@ package network.client
 
 import androidx.lifecycle.MutableLiveData
 import network.model.albums.Albums
+import network.model.albums.Alternative
 import network.model.albums.DeezerAlbums
 import network.model.tracklist.TrackListSongs
 import network.services.DeezerServices
@@ -58,6 +59,22 @@ object DeezerClient {
 
             })
 
+    }
+
+    fun getAllSongsFromAlternative(alternativ: Alternative){
+        val validEndPoint = alternativ.tracklist.substringAfter("2.0/")
+        getApi()?.getTrackList(validEndPoint)
+            ?.enqueue(object : Callback<TrackListSongs> {
+                override fun onResponse(call: Call<TrackListSongs>?, response: Response<TrackListSongs>?) {
+                    print("OK")
+                    deezerAlbumsTrackList.value = response!!.body()
+                }
+
+                override fun onFailure(call: Call<TrackListSongs>?, t: Throwable?) {
+                    print("KO")
+                }
+
+            })
     }
     
 }

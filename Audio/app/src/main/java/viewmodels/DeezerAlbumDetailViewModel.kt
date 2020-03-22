@@ -14,10 +14,14 @@ class DeezerAlbumDetailViewModel : ViewModel() {
     val deezerService = DeezerClient
 
     fun getTrackList(album: Albums) {
-       deezerService.deezerAlbumsTrackList.observe(context, Observer {
-           trackListSongs.value = it
-       })
-        deezerService.getAllSongs(album)
+        deezerService.deezerAlbumsTrackList.observe(context, Observer {
+            trackListSongs.value = it
+        })
+        if(album.alternative != null){
+            deezerService.getAllSongsFromAlternative(album.alternative)
+        }else{
+            deezerService.getAllSongs(album)
+        }
     }
 
     fun getAllTracks() : MutableLiveData<TrackListSongs>{

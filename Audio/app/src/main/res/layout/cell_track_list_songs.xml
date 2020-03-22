@@ -8,12 +8,12 @@
 
     <TextView
         android:id="@+id/song_pos_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="match_parent"
         android:text="@string/song_number_placeholder"
         android:textSize="20sp"
         android:textColor="@color/white"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="5dp"
         android:gravity="center"/>
 
     <LinearLayout
@@ -24,10 +24,12 @@
 
         <TextView
             android:id="@+id/song_name_tv"
-            android:layout_width="match_parent"
+            android:layout_width="270dp"
             android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:text="@string/song_name_placeholder"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textAlignment="textStart"
             android:textSize="20sp"
             android:textStyle="bold"

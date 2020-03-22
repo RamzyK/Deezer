@@ -2,6 +2,8 @@ package view.ui
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -15,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.deezer.R
 import media.DeezerMediaPlayer
+import media.service.OnClearFromRecentService
 import network.model.albums.Albums
 import utils.OnItemClicked
 import view.adapter.DeezerAlbumAdapter
@@ -44,8 +47,10 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_album_list)
 
+        deezerMediaPlayer.context = this
         bindViews()
-        setUpBottomBar()
+        setUp()
+        setUpBottomStickBar()
         setViewModel()
         setObservers()
         setListeners()
@@ -54,7 +59,7 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
 
     override fun onRestart() {
         super.onRestart()
-        setUpBottomBar()
+        setUpBottomStickBar()
     }
 
     private fun bindViews(){
@@ -75,7 +80,13 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         albumsRecyclerView.adapter = albumAdapter
     }
 
-    private fun setUpBottomBar(){
+    private fun setUp(){
+        deezerMediaPlayer.createChannel()
+        registerReceiver(deezerMediaPlayer, IntentFilter("DEEZER_PLAYER"))
+        startService(Intent(baseContext, OnClearFromRecentService::class.java))
+    }
+
+    private fun setUpBottomStickBar(){
         val currentSong = DeezerMediaPlayer.getCurrentSong()
         if(currentSong != null){
             Glide.with(bottomBarCoverIv)
@@ -91,7 +102,7 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
             if(deezerMediaPlayer.getMediaPlayer().isPlaying){
                 bottomBarPlayPauseIv.setImageResource(R.drawable.ic_white_pause_48)
             }else{
-                bottomBarPlayPauseIv.setImageResource(R.drawable.ic_white_start_music_48)
+                bottomBarPlayPauseIv.setImageResource(R.drawable.ic_play_white_bottom_bar)
             }
         }else{
             bottomBar.visibility = View.INVISIBLE
@@ -107,27 +118,33 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         albumViewModel.getAlbumsList().observe(this, Observer {
             albumAdapter.albumList =  it.data
         })
+
+        deezerMediaPlayer.isEndOfSongObservable.observe(this, Observer {
+            if(!this.isDestroyed){
+                setUpBottomStickBar()
+            }
+        })
     }
 
     private fun setListeners(){
         bottomBarPlayPauseIv.setOnClickListener{
             if(deezerMediaPlayer.getMediaPlayer().isPlaying){
-                deezerMediaPlayer.getMediaPlayer().pause()
-                bottomBarPlayPauseIv.setImageResource(R.drawable.ic_white_start_music_48)
+                deezerMediaPlayer.pauseSong()
+                bottomBarPlayPauseIv.setImageResource(R.drawable.ic_play_white_bottom_bar)
             }else{
-                deezerMediaPlayer.getMediaPlayer().start()
+                deezerMediaPlayer.playSongAgain()
                 bottomBarPlayPauseIv.setImageResource(R.drawable.ic_white_pause_48)
             }
         }
 
         bottomBarPreviousSongIv.setOnClickListener{
             deezerMediaPlayer.previousSong()
-            setUpBottomBar()
+            setUpBottomStickBar()
         }
 
         bottomBarNextSongIv.setOnClickListener{
             deezerMediaPlayer.nextSong()
-            setUpBottomBar()
+            setUpBottomStickBar()
         }
     }
 
@@ -139,6 +156,15 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
 
     override fun albumClicked(album: Albums) {
         launchNextScreen(context, album)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            deezerMediaPlayer.cancelAll()
+        }
+
+        unregisterReceiver(deezerMediaPlayer)
     }
 
 }
