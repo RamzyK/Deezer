@@ -23,6 +23,7 @@ import utils.OnItemClicked
 import view.adapter.DeezerAlbumAdapter
 import viewmodels.DeezerAlbumViewModel
 import widgets.CustomStickBottomBar
+import widgets.CustomToast
 
 
 class AlbumListActivity : AppCompatActivity(), OnItemClicked {
@@ -49,7 +50,8 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
 
         deezerMediaPlayer.context = this
         bindViews()
-        setUp()
+        setUpRv()
+        setUpData()
         setUpBottomStickBar()
         setViewModel()
         setObservers()
@@ -71,7 +73,6 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         bottomBarPlayPauseIv = findViewById(R.id.bottom_sticky_bar_player_btn)
         bottomBarPreviousSongIv = findViewById(R.id.bottom_sticky_bar_previous_btn)
         bottomBarNextSongIv = findViewById(R.id.bottom_sticky_bar_next_btn)
-        setUpRv()
     }
 
     private fun setUpRv(){
@@ -80,7 +81,7 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         albumsRecyclerView.adapter = albumAdapter
     }
 
-    private fun setUp(){
+    private fun setUpData(){
         deezerMediaPlayer.createChannel()
         registerReceiver(deezerMediaPlayer, IntentFilter("DEEZER_PLAYER"))
         startService(Intent(baseContext, OnClearFromRecentService::class.java))
@@ -154,8 +155,12 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         startActivity(goToAlbumTrackList)
     }
 
-    override fun albumClicked(album: Albums) {
-        launchNextScreen(context, album)
+    override fun albumClicked(album: Albums, type: Int) {
+        if(album.available){
+            launchNextScreen(context, album)
+        }else{
+            CustomToast(this, "Album momentanément indisponible").showCustomToast(type)
+        }
     }
 
     override fun onDestroy() {

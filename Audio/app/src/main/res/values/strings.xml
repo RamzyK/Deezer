@@ -16,4 +16,6 @@
     <string name="previous_song_icon">Previous song icon</string>
     <string name="pause_music_icon">Pause music icon</string>
     <string name="next_song_icon">Next song icon</string>
+    <string name="album_cell_artist_name_placeholder">ALPHA WANN</string>
+    <string name="single_text">Single</string>
 </resources>

@@ -6,4 +6,7 @@
     <color name="dark">#C4000000</color>
     <color name="white">#B5B5B5</color>
 
+    <color name="error_toast_color">#F60000</color>
+    <color name="success_toast_color">#26AC00</color>
+
 </resources>
