@@ -18,8 +18,8 @@
         <widgets.CustomStickBottomBar
             android:id="@+id/bottom_media_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             app:bottom_bar_cover="@drawable/default_cover_art"
             app:bottom_bar_album="UMLA"
             app:bottom_bar_artist="Alpha Wann"/>

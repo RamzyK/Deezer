@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="view.ui.AlbumDetail">
+    tools:context="view.ui.AlbumDetailActivity">
 
-    <widgets.TrackListTopInfoView
+    <widgets.CustomTrackListHeader
         android:id="@+id/track_list_header_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

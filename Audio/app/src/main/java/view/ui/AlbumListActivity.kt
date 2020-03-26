@@ -21,7 +21,7 @@ import media.service.OnClearFromRecentService
 import network.model.albums.Albums
 import utils.OnItemClicked
 import view.adapter.DeezerAlbumAdapter
-import viewmodels.DeezerAlbumViewModel
+import viewmodels.AlbumViewModel
 import widgets.CustomStickBottomBar
 import widgets.CustomToast
 
@@ -39,7 +39,7 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
     private lateinit var bottomBarPreviousSongIv: ImageView
     private lateinit var bottomBarNextSongIv: ImageView
 
-    private lateinit var albumViewModel: DeezerAlbumViewModel
+    private lateinit var albumViewModel: AlbumViewModel
     private lateinit var albumAdapter : DeezerAlbumAdapter
 
     private lateinit var albumsRecyclerView: RecyclerView
@@ -111,7 +111,7 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
     }
 
     private fun setViewModel(){
-        albumViewModel = ViewModelProviders.of(this).get(DeezerAlbumViewModel::class.java)
+        albumViewModel = ViewModelProviders.of(this).get(AlbumViewModel::class.java)
         albumViewModel.context = this
     }
 
@@ -147,12 +147,20 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
             deezerMediaPlayer.nextSong()
             setUpBottomStickBar()
         }
+
+        bottomBar.setOnClickListener{
+            showMusicNavigationController()
+        }
     }
 
     private fun launchNextScreen(context: Context, album: Albums) {
-        val goToAlbumTrackList = Intent(context, AlbumDetail::class.java)
+        val goToAlbumTrackList = Intent(context, AlbumDetailActivity::class.java)
         goToAlbumTrackList.putExtra("album_detail", album)
         startActivity(goToAlbumTrackList)
+    }
+
+    private fun showMusicNavigationController(){
+        startActivity(Intent(context, MusicNavigationActivity::class.java))
     }
 
     override fun albumClicked(album: Albums, type: Int) {

@@ -10,8 +10,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name="view.ui.AlbumDetail"/>
+        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
+        <activity android:name="view.ui.MusicNavigationActivity"/>
+        <activity android:name="view.ui.AlbumDetailActivity" />
         <activity android:name="view.ui.AlbumListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,8 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name="media.service.NotificationActionService"/>
-        <service android:name="media.service.OnClearFromRecentService"/>
+
+        <receiver android:name="media.service.NotificationActionService" />
+
+        <service android:name="media.service.OnClearFromRecentService" />
     </application>
 
 </manifest>

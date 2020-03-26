@@ -8,7 +8,7 @@ import network.client.DeezerClient
 import network.model.albums.Albums
 import network.model.tracklist.TrackListSongs
 
-class DeezerAlbumDetailViewModel : ViewModel() {
+class AlbumDetailViewModel : ViewModel() {
     lateinit var context : AppCompatActivity
     var trackListSongs : MutableLiveData<TrackListSongs> = MutableLiveData()
     val deezerService = DeezerClient

@@ -9,7 +9,7 @@ import com.example.deezer.R
 import network.model.tracklist.Song
 import utils.OnSongClicked
 
-class DetailAlbumAdapter(clickListener: OnSongClicked) : RecyclerView.Adapter<DetailAlbumAdapter.TrackListSongViewHolder>() {
+class DeezerDetailAlbumAdapter(clickListener: OnSongClicked) : RecyclerView.Adapter<DeezerDetailAlbumAdapter.TrackListSongViewHolder>() {
     var songsList : List<Song>? = null
         set(value) {
             field = value

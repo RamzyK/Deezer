@@ -1,5 +1,6 @@
 package view.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -17,12 +18,12 @@ import media.DeezerMediaPlayer
 import network.model.albums.Albums
 import network.model.tracklist.Song
 import utils.OnSongClicked
-import view.adapter.DetailAlbumAdapter
-import viewmodels.DeezerAlbumDetailViewModel
+import view.adapter.DeezerDetailAlbumAdapter
+import viewmodels.AlbumDetailViewModel
 import widgets.CustomStickBottomBar
 
 
-class AlbumDetail : AppCompatActivity(), OnSongClicked {
+class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
     // List qui s'affiche à l'écran dans chaque page de détail d'album
     private lateinit var currentPageTrackList: List<Song>
 
@@ -46,8 +47,8 @@ class AlbumDetail : AppCompatActivity(), OnSongClicked {
     private lateinit var bottomBarPreviousSongIv: ImageView
     private lateinit var bottomBarNextSongIv: ImageView
 
-    private lateinit var songsViewModel: DeezerAlbumDetailViewModel
-    private lateinit var detailAlbumAdapter: DetailAlbumAdapter
+    private lateinit var songsViewModel: AlbumDetailViewModel
+    private lateinit var deezerDetailAlbumAdapter: DeezerDetailAlbumAdapter
 
     private lateinit var trackListSongsListRv: RecyclerView
 
@@ -64,6 +65,11 @@ class AlbumDetail : AppCompatActivity(), OnSongClicked {
         setObservers()
         setListeners()
         songsViewModel.getTrackList(albums)
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        setUpBottomStickBar()
     }
 
     private fun bindViews(){
@@ -103,9 +109,9 @@ class AlbumDetail : AppCompatActivity(), OnSongClicked {
     }
 
     private fun setUpListSongsRv(){
-        this.detailAlbumAdapter = DetailAlbumAdapter(this)
+        this.deezerDetailAlbumAdapter = DeezerDetailAlbumAdapter(this)
         trackListSongsListRv.layoutManager = LinearLayoutManager(this)
-        trackListSongsListRv.adapter = detailAlbumAdapter
+        trackListSongsListRv.adapter = deezerDetailAlbumAdapter
     }
 
     private fun setUpBottomStickBar(){
@@ -132,7 +138,7 @@ class AlbumDetail : AppCompatActivity(), OnSongClicked {
     }
 
     private fun setViewModel(){
-        songsViewModel = ViewModelProviders.of(this).get(DeezerAlbumDetailViewModel::class.java)
+        songsViewModel = ViewModelProviders.of(this).get(AlbumDetailViewModel::class.java)
         songsViewModel.context = this
     }
 
@@ -140,7 +146,7 @@ class AlbumDetail : AppCompatActivity(), OnSongClicked {
         songsViewModel.getAllTracks().observe(this, Observer {
             if(it!= null){
                 currentPageTrackList = it.data
-                detailAlbumAdapter.songsList = it.data
+                deezerDetailAlbumAdapter.songsList = it.data
             }else{
                 Toast.makeText(context, "Une erreur est survenue !", Toast.LENGTH_LONG).show()
             }
@@ -174,6 +180,14 @@ class AlbumDetail : AppCompatActivity(), OnSongClicked {
             setUpBottomStickBar()
         }
 
+        bottomBar.setOnClickListener{
+            showMusicNavigationController()
+        }
+
+    }
+
+    private fun showMusicNavigationController(){
+        startActivity(Intent(context, MusicNavigationActivity::class.java))
     }
 
     override fun trackListSongClicked(song: Song, pos: Int) {

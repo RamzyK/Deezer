@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.deezer.R
 
-class TrackListTopInfoView (context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
+class CustomTrackListHeader (context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
 
     private var coverIV: ImageView
     private var artistNameTV: TextView
@@ -28,18 +28,18 @@ class TrackListTopInfoView (context: Context, attrs: AttributeSet) : ConstraintL
         albumReleaseDateYv = findViewById(R.id.album_release_date_tv)
         explicitTV = findViewById(R.id.is_explicit_tv)
 
-        attributes = context.obtainStyledAttributes(attrs, R.styleable.TrackListTopInfoView)
+        attributes = context.obtainStyledAttributes(attrs, R.styleable.CustomTrackListHeader)
         setViews()
         attributes.recycle()
     }
 
     private fun setViews() {
-        isAlbumExplicit = attributes.getBoolean(R.styleable.TrackListTopInfoView_explicit, false)
+        isAlbumExplicit = attributes.getBoolean(R.styleable.CustomTrackListHeader_explicit, false)
 
-        coverIV.setImageDrawable(attributes.getDrawable(R.styleable.TrackListTopInfoView_cover))
-        artistNameTV.text = attributes.getString(R.styleable.TrackListTopInfoView_artist)
-        albumNameTV.text = attributes.getString(R.styleable.TrackListTopInfoView_album)
-        albumReleaseDateYv.text =  attributes.getString(R.styleable.TrackListTopInfoView_release_date)
+        coverIV.setImageDrawable(attributes.getDrawable(R.styleable.CustomTrackListHeader_cover))
+        artistNameTV.text = attributes.getString(R.styleable.CustomTrackListHeader_artist)
+        albumNameTV.text = attributes.getString(R.styleable.CustomTrackListHeader_album)
+        albumReleaseDateYv.text =  attributes.getString(R.styleable.CustomTrackListHeader_release_date)
         if (isAlbumExplicit) {
            explicitTV.visibility = View.VISIBLE
         }else{
