@@ -101,8 +101,8 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
         Glide.with(this)
             .load(albums.cover)
             .centerCrop()
-            .placeholder(R.drawable.ic_launcher_background)
-            .error(R.drawable.ic_launcher_foreground)
+            .placeholder(R.drawable.default_cover_art)
+            .error(R.drawable.default_cover_art)
             .into(albumCoverIv)
         if(albums.explicit_lyrics){
             albumIsExplicitTv.visibility = View.VISIBLE
