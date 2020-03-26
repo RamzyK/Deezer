@@ -17,17 +17,20 @@ import utils.OnNotificationControllerTouched
 
 object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
     private var mediaPlayer = MediaPlayer()
+
+    private var timeLeft = 30
+    var timeSpent = 0
+    private var isLoopingOnAlbum = false
+    lateinit var context: Context
+
     private var currentSong: Song? = null
     private var currentAlbumCover: String? = null
     private var currentSongPosInTrackList = 0
     private var currentTrackList: List<Song>? = null
-    lateinit var context: Context
-    private var timeLeft = 30
-    var timeSpent = 0
-    private var isLoopingOnAlbum = false
-    var musicPlayingUpdater : OnMusicIsPlaying? = null
-    private var runnable: Runnable = Runnable { updateSpentTime() }
+
     private var handler = Handler()
+    private var runnable: Runnable = Runnable { updateSpentTime() }
+    var musicPlayingUpdater : OnMusicIsPlaying? = null
 
     var isEndOfSongObservable: MutableLiveData<Boolean> = MutableLiveData()
     private lateinit var notificationManager: NotificationManager
@@ -210,7 +213,6 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
     }
 
     override fun onReceive(p0: Context?, p1: Intent?) {
-
         when (p1!!.extras!!.getString("actioname")) {
             NotificationBarController.ACTION_PREVIOUS -> onSongPrevious()
             NotificationBarController.ACTION_NEXT -> onSongNext()
