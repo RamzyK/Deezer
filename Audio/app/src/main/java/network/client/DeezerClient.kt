@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import network.model.albums.Albums
 import network.model.albums.Alternative
 import network.model.albums.DeezerAlbums
+import network.model.albums.deep_linked.AlbumFromDeepLink
 import network.model.tracklist.TrackListSongs
 import network.services.DeezerServices
 import retrofit2.Call
@@ -18,6 +19,7 @@ object DeezerClient {
     private const val BASE_URL = "https://api.deezer.com/2.0/"
     var deezerAlbums : MutableLiveData<DeezerAlbums> = MutableLiveData()
     var deezerAlbumsTrackList : MutableLiveData<TrackListSongs> = MutableLiveData()
+    var albumFromLink : MutableLiveData<AlbumFromDeepLink> = MutableLiveData()
 
     private fun getApi(): DeezerServices? {
         if (deezerServices == null) {
@@ -71,6 +73,21 @@ object DeezerClient {
                 }
 
                 override fun onFailure(call: Call<TrackListSongs>?, t: Throwable?) {
+                    print("KO")
+                }
+
+            })
+    }
+
+    fun getAllSongsFromLink(path: String){
+        getApi()?.getTrackListFromLink(path)
+            ?.enqueue(object : Callback<AlbumFromDeepLink> {
+                override fun onResponse(call: Call<AlbumFromDeepLink>?, response: Response<AlbumFromDeepLink>?) {
+                    print("OK")
+                    albumFromLink.value = response!!.body()
+                }
+
+                override fun onFailure(call: Call<AlbumFromDeepLink>?, t: Throwable?) {
                     print("KO")
                 }
 

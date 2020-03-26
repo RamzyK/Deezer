@@ -3,16 +3,12 @@ package view.ui
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.deezer.R
-import kotlinx.android.synthetic.main.cell_track_list_songs.*
 import media.DeezerMediaPlayer
 import utils.OnMusicIsPlaying
 

@@ -22,7 +22,7 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
     private var currentSongPosInTrackList = 0
     private var currentTrackList: List<Song>? = null
     lateinit var context: Context
-    var timeLeft = 30
+    private var timeLeft = 30
     var timeSpent = 0
     private var isLoopingOnAlbum = false
     var musicPlayingUpdater : OnMusicIsPlaying? = null
@@ -35,7 +35,7 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
 
     fun playSong(song:Song){
         handler.removeCallbacks(runnable)
-        NotificationBarController().createNotification(context, currentAlbumCover!!, song, R.drawable.ic_pause_notification_bar)
+        NotificationBarController().createNotification(context, song, R.drawable.ic_pause_notification_bar)
         if(!mediaPlayer.isPlaying){
             mediaPlayer.reset()
         }
@@ -109,12 +109,12 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
     fun playSongAgain(){
         mediaPlayer.start()
         updateSpentTime()
-        NotificationBarController().createNotification(context, currentAlbumCover!!, currentSong!!, R.drawable.ic_pause_notification_bar)
+        NotificationBarController().createNotification(context, currentSong!!, R.drawable.ic_pause_notification_bar)
     }
 
     fun pauseSong(){
         mediaPlayer.pause()
-        NotificationBarController().createNotification(context, currentAlbumCover!!, currentSong!!, R.drawable.ic_play_notification_bar)
+        NotificationBarController().createNotification(context, currentSong!!, R.drawable.ic_play_notification_bar)
     }
 
     fun loopOnSong(loop: Boolean){
@@ -147,15 +147,12 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
 
             notificationManager = context.getSystemService(NotificationManager::class.java)!!
             notificationManager.createNotificationChannel(notificatiionChannel)
-
         }
-
     }
 
     fun cancelAll(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.cancelAll()
-
         }
     }
 
@@ -197,13 +194,13 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
     override fun onSongPlay() {
         mediaPlayer.start()
         updateSpentTime()
-        NotificationBarController().createNotification(context, currentAlbumCover!!, currentSong!!, R.drawable.ic_pause_notification_bar)
+        NotificationBarController().createNotification(context, currentSong!!, R.drawable.ic_pause_notification_bar)
         isEndOfSongObservable.value = true
     }
 
     override fun onSongPause() {
         mediaPlayer.pause()
-        NotificationBarController().createNotification(context, currentAlbumCover!!, currentSong!!, R.drawable.ic_play_notification_bar)
+        NotificationBarController().createNotification(context, currentSong!!, R.drawable.ic_play_notification_bar)
         isEndOfSongObservable.value = true
     }
 

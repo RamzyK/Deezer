@@ -22,13 +22,13 @@ import view.adapter.DeezerDetailAlbumAdapter
 import viewmodels.AlbumDetailViewModel
 import widgets.CustomStickBottomBar
 
-
 class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
     // List qui s'affiche à l'écran dans chaque page de détail d'album
     private lateinit var currentPageTrackList: List<Song>
 
     private val deezerMediaPlayer = DeezerMediaPlayer
     private lateinit var albums: Albums
+    private var songIdToPlay: String = ""
     private var context = this
 
     // Header album info views
@@ -73,7 +73,12 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
     }
 
     private fun bindViews(){
-        albums = intent.getSerializableExtra("album_detail") as Albums
+        intent?.let {
+            albums = it.getSerializableExtra("album_detail") as Albums
+            it.getStringExtra("songId")?.let{ id ->
+                songIdToPlay = id
+            }
+        }
         artistNameTv = findViewById(R.id.artist_name_tv)
         albumTitleTv = findViewById(R.id.album_name_tv)
         albumCoverIv = findViewById(R.id.album_cover_iv)
@@ -147,6 +152,14 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
             if(it!= null){
                 currentPageTrackList = it.data
                 deezerDetailAlbumAdapter.songsList = it.data
+                if(songIdToPlay != ""){
+                    it.data.map { s ->
+                        if(s.id == songIdToPlay.toInt()) {
+                            val song = it.data[s.track_position - 1]
+                            trackListSongClicked(song, s.track_position - 1)
+                        }
+                    }
+                }
             }else{
                 Toast.makeText(context, "Une erreur est survenue !", Toast.LENGTH_LONG).show()
             }
@@ -192,6 +205,7 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
 
     override fun trackListSongClicked(song: Song, pos: Int) {
         // Play song
+        //val albumId = albums.id
         deezerMediaPlayer.setCurrentCover(albums.cover)
         deezerMediaPlayer.setCurrentSong(song)
         deezerMediaPlayer.setCurrentSongPos(pos)

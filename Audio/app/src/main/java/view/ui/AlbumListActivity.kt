@@ -25,7 +25,6 @@ import viewmodels.AlbumViewModel
 import widgets.CustomStickBottomBar
 import widgets.CustomToast
 
-
 class AlbumListActivity : AppCompatActivity(), OnItemClicked {
     private val deezerMediaPlayer = DeezerMediaPlayer
     private val context =  this
@@ -56,6 +55,7 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         setViewModel()
         setObservers()
         setListeners()
+        setExternalIntentReceptor()
         albumViewModel.getAlbums()
     }
 
@@ -83,6 +83,7 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
 
     private fun setUpData(){
         deezerMediaPlayer.createChannel()
+
         registerReceiver(deezerMediaPlayer, IntentFilter("DEEZER_PLAYER"))
         startService(Intent(baseContext, OnClearFromRecentService::class.java))
     }
@@ -116,7 +117,7 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
     }
 
     private fun setObservers(){
-        albumViewModel.getAlbumsList().observe(this, Observer {
+        albumViewModel.albumList.observe(this, Observer {
             albumAdapter.albumList =  it.data
         })
 
@@ -159,6 +160,13 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         startActivity(goToAlbumTrackList)
     }
 
+    private fun launchDetailAlbumFromLink(album: Albums, songToplay: String){
+        val intent = Intent(this, AlbumDetailActivity::class.java)
+        intent.putExtra("album_detail", album)
+        intent.putExtra("songId", songToplay)
+        startActivity(intent)
+    }
+
     private fun showMusicNavigationController(){
         startActivity(Intent(context, MusicNavigationActivity::class.java))
     }
@@ -173,11 +181,28 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
 
     override fun onDestroy() {
         super.onDestroy()
+        clearNotificication()
+    }
+
+    private fun clearNotificication(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             deezerMediaPlayer.cancelAll()
         }
 
         unregisterReceiver(deezerMediaPlayer)
+    }
+
+    private fun setExternalIntentReceptor(){
+        intent.data?.let { it ->
+            val params = it.pathSegments
+            val albumId = params[0]
+            val songId = params[1]
+
+            albumViewModel.getTrackListFromExternalLink(albumId)
+            albumViewModel.albumFromLink.observe(this, Observer {
+                launchDetailAlbumFromLink(it, songId)
+            })
+        }
     }
 
 }

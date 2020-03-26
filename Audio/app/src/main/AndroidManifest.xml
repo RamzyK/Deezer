@@ -12,12 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
         <activity android:name="view.ui.MusicNavigationActivity"/>
-        <activity android:name="view.ui.AlbumDetailActivity" />
+        <activity android:name="view.ui.AlbumDetailActivity"/>
         <activity android:name="view.ui.AlbumListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="https"
+                    android:host="api.deezer.com"/>
             </intent-filter>
         </activity>
 
