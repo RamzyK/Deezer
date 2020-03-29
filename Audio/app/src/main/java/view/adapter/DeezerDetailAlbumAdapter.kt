@@ -40,7 +40,7 @@ class DeezerDetailAlbumAdapter(clickListener: OnSongClicked) : RecyclerView.Adap
         private val songPositionTv = itemView.findViewById<TextView>(R.id.song_pos_tv)
         private val songNameTv = itemView.findViewById<TextView>(R.id.song_name_tv)
         private val songArtistNameTv = itemView.findViewById<TextView>(R.id.artist_name_on_song_tv)
-        //rivate val favSongIv = itemView.findViewById<ImageView>(R.id.fav_image_view)
+        //private val favSongIv = itemView.findViewById<ImageView>(R.id.fav_image_view)
 
         fun bind(song: Song, pos: Int, listener: OnSongClicked){
             songPositionTv.text = (pos + 1).toString()
@@ -49,6 +49,11 @@ class DeezerDetailAlbumAdapter(clickListener: OnSongClicked) : RecyclerView.Adap
 
             itemView.setOnClickListener{
                 listener.trackListSongClicked(song, pos)
+            }
+
+            itemView.setOnLongClickListener{
+                listener.trackLIstSongLongClicker(song, pos)
+                true
             }
         }
     }

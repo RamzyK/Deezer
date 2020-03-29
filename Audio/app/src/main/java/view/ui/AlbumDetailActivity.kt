@@ -22,6 +22,7 @@ import view.adapter.DeezerDetailAlbumAdapter
 import viewmodels.AlbumDetailViewModel
 import widgets.CustomStickBottomBar
 
+
 class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
     // List qui s'affiche à l'écran dans chaque page de détail d'album
     private lateinit var currentPageTrackList: List<Song>
@@ -215,6 +216,21 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
         }
         deezerMediaPlayer.playSong(song)
         setUpBottomStickBar()
+    }
+
+    override fun trackLIstSongLongClicker(song: Song, pos: Int) {
+        try {
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Deezer")
+            var shareMessage = "\nÉcoute ce son sur Deezer, il est vraiment super ! \n\n"
+            val songId = "/" + albums.id + "/" + song.id
+            shareMessage = shareMessage + "https://api.deezer.com" + songId
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+            startActivity(Intent.createChooser(shareIntent, "Comment voulez-vous partager " + song.title_short + "avec vos proche ?"))
+        } catch (e: Exception) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+        }
     }
 
 }
