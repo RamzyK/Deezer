@@ -50,7 +50,7 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         deezerMediaPlayer.context = this
         bindViews()
         setUpRv()
-        setUpData()
+        setUpExternalData()
         setUpBottomStickBar()
         setViewModel()
         setObservers()
@@ -81,7 +81,8 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         albumsRecyclerView.adapter = albumAdapter
     }
 
-    private fun setUpData(){
+    // Notification & Deep links
+    private fun setUpExternalData(){
         deezerMediaPlayer.createChannel()
 
         registerReceiver(deezerMediaPlayer, IntentFilter("DEEZER_PLAYER"))
@@ -92,10 +93,10 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         val currentSong = DeezerMediaPlayer.getCurrentSong()
         if(currentSong != null){
             Glide.with(bottomBarCoverIv)
-                .load(DeezerMediaPlayer.getCurrentCover())
+                .load(DeezerMediaPlayer.getCurrentSmallCover())
                 .centerCrop()
                 .placeholder(R.drawable.default_cover_art)
-                .error(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.default_cover_art)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(bottomBarCoverIv)
             bottomBar.visibility = View.VISIBLE

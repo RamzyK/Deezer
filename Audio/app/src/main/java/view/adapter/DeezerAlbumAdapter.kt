@@ -82,7 +82,7 @@ class DeezerAlbumAdapter(clickListener: OnItemClicked) : RecyclerView.Adapter<Re
         private val albumArtistName = itemView.findViewById<TextView>(R.id.album_artist_name_tv)
 
         fun bind(album: Albums, listener: OnItemClicked){
-            val url = album.cover
+            val url = album.cover_medium
             albumName.text = album.title
             albumArtistName.text = album.artist.name
             Glide.with(itemView)
@@ -90,7 +90,7 @@ class DeezerAlbumAdapter(clickListener: OnItemClicked) : RecyclerView.Adapter<Re
                 .centerCrop()
                 .placeholder(R.drawable.default_cover_art)
                 .error(R.drawable.ic_launcher_foreground)
-                .transition(DrawableTransitionOptions.withCrossFade())
+                .transition(DrawableTransitionOptions.withCrossFade(400))
                 .into(albumCover)
             itemView.setOnClickListener {
                 listener.albumClicked(album, 0)

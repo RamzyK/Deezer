@@ -25,11 +25,12 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
 
     private var currentSong: Song? = null
     private var currentAlbumCover: String? = null
+    private var currentAlbumCoverSmall: String? = null
     private var currentSongPosInTrackList = 0
     private var currentTrackList: List<Song>? = null
 
-    private var handler = Handler()
-    private var runnable: Runnable = Runnable { updateSpentTime() }
+    private var musicPlayedBarHandler = Handler()
+    private var musicTimerRunnable: Runnable = Runnable { updateSpentTime() }
     var musicPlayingUpdater : OnMusicIsPlaying? = null
 
     var isEndOfSongObservable: MutableLiveData<Boolean> = MutableLiveData()
@@ -37,7 +38,7 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
 
 
     fun playSong(song:Song){
-        handler.removeCallbacks(runnable)
+        musicPlayedBarHandler.removeCallbacks(musicTimerRunnable)
         NotificationBarController().createNotification(context, song, R.drawable.ic_pause_notification_bar)
         if(!mediaPlayer.isPlaying){
             mediaPlayer.reset()
@@ -51,7 +52,7 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
     private fun updateSpentTime(){
         if(mediaPlayer.isPlaying){
             if(timeLeft != 0){
-                handler.postDelayed(runnable, 1000)
+                musicPlayedBarHandler.postDelayed(musicTimerRunnable, 1000)
                 timeSpent++
                 timeLeft--
                 musicPlayingUpdater?.updateMusicReader(timeSpent, timeLeft)
@@ -177,8 +178,16 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
         return currentAlbumCover
     }
 
+    fun getCurrentSmallCover(): String?{
+        return currentAlbumCoverSmall
+    }
+
     fun setCurrentCover(s: String){
         currentAlbumCover = s
+    }
+
+    fun setCurrentSmallCover(s: String){
+        currentAlbumCoverSmall = s
     }
 
     fun setTrackList(trackList: List<Song>){

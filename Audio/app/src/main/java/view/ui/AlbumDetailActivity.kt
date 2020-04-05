@@ -100,7 +100,7 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
         artistNameTv.text = albums.artist.name
         albumTitleTv.text = albums.title
         Glide.with(this)
-            .load(albums.cover)
+            .load(albums.cover_big)
             .centerCrop()
             .placeholder(R.drawable.default_cover_art)
             .error(R.drawable.default_cover_art)
@@ -124,10 +124,10 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
         val currentSong = DeezerMediaPlayer.getCurrentSong()
         if(currentSong != null){
             Glide.with(bottomBarCoverIv)
-                .load(DeezerMediaPlayer.getCurrentCover())
+                .load(DeezerMediaPlayer.getCurrentSmallCover())
                 .centerCrop()
                 .placeholder(R.drawable.default_cover_art)
-                .error(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.default_cover_art)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(bottomBarCoverIv)
             bottomBar.visibility = View.VISIBLE
@@ -206,8 +206,8 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
 
     override fun trackListSongClicked(song: Song, pos: Int) {
         // Play song
-        //val albumId = albums.id
-        deezerMediaPlayer.setCurrentCover(albums.cover)
+        deezerMediaPlayer.setCurrentCover(albums.cover_big)
+        deezerMediaPlayer.setCurrentSmallCover(albums.cover_small)
         deezerMediaPlayer.setCurrentSong(song)
         deezerMediaPlayer.setCurrentSongPos(pos)
         deezerMediaPlayer.setTrackList(currentPageTrackList) // Devient la liste globale à l'écoute

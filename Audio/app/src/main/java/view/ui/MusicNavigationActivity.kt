@@ -103,15 +103,8 @@ class MusicNavigationActivity : AppCompatActivity(), OnMusicIsPlaying {
                     deezerMediaPlayer.getMediaPlayer().seekTo(p1)
                 }
             }
-
-            override fun onStartTrackingTouch(p0: SeekBar?) {
-
-            }
-
-            override fun onStopTrackingTouch(p0: SeekBar?) {
-
-            }
-
+            override fun onStartTrackingTouch(p0: SeekBar?) {}
+            override fun onStopTrackingTouch(p0: SeekBar?) {}
         })
 
         previousSongIv.setOnClickListener{
