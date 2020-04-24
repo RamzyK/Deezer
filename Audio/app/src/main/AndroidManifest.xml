@@ -31,6 +31,17 @@
 
         <receiver android:name="media.service.NotificationActionService" />
 
+        <receiver android:name="widgets.CustomAppWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="deezer.action.PREVIOUS_MUSIC" />
+                <action android:name="deezer.action.NEXT_MUSIC" />
+                <action android:name="deezer.action.PLAY_PAUSE_MUSIC" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_conf" />
+        </receiver>
+
         <service android:name="media.service.OnClearFromRecentService" />
     </application>
 

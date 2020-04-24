@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:orientation="horizontal"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark">
+
+    <ImageView
+        android:id="@+id/custom_widget_iv"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/default_cover_art"/>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/custom_widget_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="@string/song_name_placeholder"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/custom_widget_btn_prev"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/ic_previous_song_white"/>
+
+            <Button
+                android:id="@+id/custom_widget_btn_play"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/ic_white_pause_48"/>
+
+            <Button
+                android:id="@+id/custom_widget_btn_next"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/ic_next_song_white"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
