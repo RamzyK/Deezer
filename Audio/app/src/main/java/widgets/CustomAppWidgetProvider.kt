@@ -33,17 +33,17 @@ class CustomAppWidgetProvider : AppWidgetProvider() {
                 R.layout.custom_widget_view
             ).apply {
                 val prevIntent = Intent(context, CustomAppWidgetProvider::class.java)
-                prevIntent.setAction(ACTION_PREVIOUS)
+                prevIntent.action = ACTION_PREVIOUS
                 val prevPending = PendingIntent.getBroadcast(context, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
                 setOnClickPendingIntent(R.id.custom_widget_btn_prev, prevPending)
 
                 val nextIntent = Intent(context, CustomAppWidgetProvider::class.java)
-                nextIntent.setAction(ACTION_NEXT)
+                nextIntent.action = ACTION_NEXT
                 val nextPending = PendingIntent.getBroadcast(context, 1, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT)
                 setOnClickPendingIntent(R.id.custom_widget_btn_next, nextPending)
 
                 val playPauseIntent = Intent(context, CustomAppWidgetProvider::class.java)
-                playPauseIntent.setAction(ACTION_PLAY_PAUSE)
+                playPauseIntent.action = ACTION_PLAY_PAUSE
                 val playPausePending = PendingIntent.getBroadcast(context, 2, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT)
                 setOnClickPendingIntent(R.id.custom_widget_btn_play, playPausePending)
             }
@@ -87,13 +87,13 @@ class CustomAppWidgetProvider : AppWidgetProvider() {
                 .error(R.drawable.default_cover_art)
                 .into(awt)
 
-            remoteViews.setTextViewText(R.id.custom_widget_tv, currentSong!!.title_short)
+            remoteViews.setTextViewText(R.id.custom_widget_tv, currentSong.title_short)
             if(DeezerMediaPlayer.getMediaPlayer().isPlaying) {
                 remoteViews.setInt(R.id.custom_widget_btn_play, "setBackgroundResource", iconPause)
             } else {
                 remoteViews.setInt(R.id.custom_widget_btn_play, "setBackgroundResource", iconPlay)
             }
-            
+
             appWidgetManager.updateAppWidget(thisWidget, remoteViews)
         }
     }
