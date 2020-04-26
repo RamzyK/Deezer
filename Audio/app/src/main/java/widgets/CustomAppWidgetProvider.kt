@@ -53,15 +53,17 @@ class CustomAppWidgetProvider : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
-        when(intent.action) {
-            ACTION_PLAY_PAUSE ->
-                if (DeezerMediaPlayer.getMediaPlayer().isPlaying) {
-                    DeezerMediaPlayer.pauseSong()
-                } else {
-                    DeezerMediaPlayer.playSongAgain()
-                }
-            ACTION_NEXT -> DeezerMediaPlayer.nextSong()
-            ACTION_PREVIOUS -> DeezerMediaPlayer.previousSong()
+        if (DeezerMediaPlayer.getCurrentSong() != null) {
+            when(intent.action) {
+                ACTION_PLAY_PAUSE ->
+                    if (DeezerMediaPlayer.getMediaPlayer().isPlaying) {
+                        DeezerMediaPlayer.pauseSong()
+                    } else {
+                        DeezerMediaPlayer.playSongAgain()
+                    }
+                ACTION_NEXT -> DeezerMediaPlayer.nextSong()
+                ACTION_PREVIOUS -> DeezerMediaPlayer.previousSong()
+            }
         }
 
         super.onReceive(context, intent)
