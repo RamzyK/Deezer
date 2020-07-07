@@ -5,9 +5,13 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.media.MediaMetadata
 import android.media.MediaPlayer
+import android.media.session.MediaSession
+import android.media.session.PlaybackState
 import android.os.Build
 import android.os.Handler
+import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
 import com.example.deezer.R
 import media.notification_control.NotificationBarController
@@ -38,6 +42,7 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
 
 
     fun playSong(song:Song){
+        sendTextOverAVRCP(context, song.title, song.artist.name)
         musicPlayedBarHandler.removeCallbacks(musicTimerRunnable)
         NotificationBarController().createNotification(context, song, R.drawable.ic_pause_notification_bar)
         if(!mediaPlayer.isPlaying){
@@ -233,5 +238,31 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
                 }
             }
         }
+    }
+
+    fun sendTextOverAVRCP(context: Context,
+                          songTitle: String,
+                          artistName:  String) {
+        var mediaSession = MediaSession(context, "Deezer")
+        val state = PlaybackState.Builder()
+            .setActions(
+                PlaybackState.ACTION_PLAY or PlaybackState.ACTION_PLAY_PAUSE or
+                        PlaybackState.ACTION_PLAY_FROM_MEDIA_ID or PlaybackState.ACTION_PAUSE or
+                        PlaybackState.ACTION_SKIP_TO_NEXT or PlaybackState.ACTION_SKIP_TO_PREVIOUS
+            )
+            .setState(PlaybackState.STATE_PLAYING, 1, 1f, SystemClock.elapsedRealtime())
+            .build()
+        //set the metadata to send, this is the text that will be displayed
+        //if the strings are too long they might be cut off
+        //you need to experiment with the receiving device to know max length
+        val metadata = MediaMetadata.Builder()
+            .putString(MediaMetadata.METADATA_KEY_TITLE, songTitle)
+            .putString(MediaMetadata.METADATA_KEY_ARTIST, artistName)
+            .putString(MediaMetadata.METADATA_KEY_GENRE, "0")
+            .build()
+
+        mediaSession.setActive(true)
+        mediaSession.setMetadata(metadata)
+        mediaSession.setPlaybackState(state)
     }
 }

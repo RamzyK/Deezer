@@ -5,9 +5,12 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -24,6 +27,7 @@ import view.adapter.DeezerAlbumAdapter
 import viewmodels.AlbumViewModel
 import widgets.CustomStickBottomBar
 import widgets.CustomToast
+
 
 class AlbumListActivity : AppCompatActivity(), OnItemClicked {
     private val deezerMediaPlayer = DeezerMediaPlayer
@@ -64,6 +68,23 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         setUpBottomStickBar()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.custom_toolbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            R.id.action -> {
+                val configIntent =  Intent(this, BluetoothConfigActivity::class.java)
+                startActivity(configIntent)
+            }
+            else -> {
+            }
+        }
+        return true
+    }
     private fun bindViews(){
         albumsRecyclerView = findViewById(R.id.home_activity_albums_grid_view)
         bottomBar = findViewById(R.id.bottom_media_bar)
