@@ -258,7 +258,7 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
         val metadata = MediaMetadata.Builder()
             .putString(MediaMetadata.METADATA_KEY_TITLE, songTitle)
             .putString(MediaMetadata.METADATA_KEY_ARTIST, artistName)
-            .putString(MediaMetadata.METADATA_KEY_GENRE, "0")
+            .putString(MediaMetadata.METADATA_KEY_GENRE, "")
             .build()
 
         mediaSession.setActive(true)
