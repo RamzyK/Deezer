@@ -20,7 +20,7 @@
     <string name="single_text">Single</string>
     <string name="configuration_menu">Configuration</string>
     <string name="not_connected_bluetooth_tv">Not connected</string>
-    <string name="transfer_btn">Transferer</string>
+    <string name="config_btn">Configurer</string>
     <string name="connected_indicator">Connected</string>
     <string name="not_connected_indicator">Not connected</string>
 </resources>

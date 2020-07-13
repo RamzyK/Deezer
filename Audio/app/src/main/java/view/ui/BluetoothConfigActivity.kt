@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -30,16 +31,27 @@ class BluetoothConfigActivity : AppCompatActivity() {
     private var socketState: TextView? = null
     private var isCoToSocket: Boolean  = false
 
+    private var topSpeaker: ImageView? = null
+    private var leftSpeaker: ImageView? = null
+    private var rightSpeaker: ImageView? = null
+
+    private var randomSpeakerIsOn = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bluetooth_config)
 
         sendDataBtn = findViewById(R.id.snd)
         socketState = findViewById(R.id.socket_state)
+        topSpeaker = findViewById(R.id.top_speaker_img)
+        leftSpeaker = findViewById(R.id.left_speaker_img)
+        rightSpeaker = findViewById(R.id.right_speaker_img)
 
         setListeners()
         registerBtBroadcast()
         connectToSocketBt()
+        sendTextOverAVRCP()
+        setSpeakerOn()
     }
 
     private fun registerBtBroadcast(){
@@ -173,6 +185,7 @@ class BluetoothConfigActivity : AppCompatActivity() {
             .putString(MediaMetadata.METADATA_KEY_TITLE, "")
             .putString(MediaMetadata.METADATA_KEY_ARTIST, "")
             .putString(MediaMetadata.METADATA_KEY_GENRE, "1")
+            .putString(MediaMetadata.METADATA_KEY_DISPLAY_DESCRIPTION, "1")
             .build()
 
         mediaSession.setActive(true)
@@ -180,6 +193,15 @@ class BluetoothConfigActivity : AppCompatActivity() {
         mediaSession.setPlaybackState(state)
     }
 
+    fun setSpeakerOn(){
+        randomSpeakerIsOn = (0..2).random()
+
+        when(randomSpeakerIsOn){
+            0 -> topSpeaker?.setImageResource(R.drawable.top_activated)
+            1 -> leftSpeaker?.setImageResource(R.drawable.left_activated)
+            2 -> rightSpeaker?.setImageResource(R.drawable.right_activated)
+        }
+    }
 
 
     override fun onDestroy() {
