@@ -89,8 +89,14 @@ class DeezerAlbumAdapter(clickListener: OnItemClicked) :
 
         fun bind(album: Albums, listener: OnItemClicked) {
             val url = album.cover_medium
-            albumName.text = album.title
-            albumArtistName.text = album.artist.name
+            if(album.alternative != null){
+                albumName.text = album.alternative.title
+                albumArtistName.text = album.alternative.artist.name
+            }else{
+                albumName.text = album.title
+                albumArtistName.text = album.artist.name
+            }
+
             Glide.with(itemView)
                 .load(url)
                 .centerCrop()
@@ -111,7 +117,8 @@ class DeezerAlbumAdapter(clickListener: OnItemClicked) :
         private val singleArtistName = itemView.findViewById<TextView>(R.id.single_artist_name_tv)
 
         fun bind(single: Albums, listener: OnItemClicked) {
-            val url = single.cover
+
+            val url = single.cover_medium
             singleName.text = single.title
             singleArtistName.text = single.artist.name
             Glide.with(itemView)
