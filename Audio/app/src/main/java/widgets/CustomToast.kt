@@ -2,7 +2,6 @@ package widgets
 
 import android.R.id.message
 import android.content.Context
-import android.graphics.PorterDuff
 import android.widget.TextView
 import android.widget.Toast
 import com.example.deezer.R
@@ -18,10 +17,10 @@ class CustomToast(context: Context, infos: String) {
         val toast = Toast.makeText(ctx, data, Toast.LENGTH_LONG)
         val view = toast.view
 
-        if(type == 0){
-            view.background.setColorFilter(ERROR_BACKGROUND_COLOR, PorterDuff.Mode.SRC_IN)
-        }else{
-            view.background.setColorFilter(SUCCESS_BACKGROUND_COLOR, PorterDuff.Mode.SRC_IN)
+        if (type == 0) {
+            view.background.setTint(ERROR_BACKGROUND_COLOR)
+        } else {
+            view.background.setTint(SUCCESS_BACKGROUND_COLOR)
         }
         val text = view.findViewById<TextView>(message)
         text.textSize = 15F

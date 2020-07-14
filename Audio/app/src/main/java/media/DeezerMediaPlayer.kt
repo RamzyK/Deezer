@@ -7,11 +7,13 @@ import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.media.MediaMetadata
 import android.media.MediaPlayer
-import android.net.Uri
+import android.media.session.MediaSession
+import android.media.session.PlaybackState
 import android.os.Build
 import android.os.Handler
-import android.widget.RemoteViews
+import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.example.deezer.R
@@ -21,7 +23,7 @@ import utils.OnMusicIsPlaying
 import utils.OnNotificationControllerTouched
 import widgets.CustomAppWidgetProvider
 
-object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
+object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver() {
     private var mediaPlayer = MediaPlayer()
 
     private var timeLeft = 30
@@ -37,7 +39,7 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
 
     private var musicPlayedBarHandler = Handler()
     private var musicTimerRunnable: Runnable = Runnable { updateSpentTime() }
-    var musicPlayingUpdater : OnMusicIsPlaying? = null
+    var musicPlayingUpdater: OnMusicIsPlaying? = null
 
     var isEndOfSongObservable: MutableLiveData<Boolean> = MutableLiveData()
     private lateinit var notificationManager: NotificationManager
@@ -45,10 +47,15 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
     var appWidget = CustomAppWidgetProvider()
 
 
-    fun playSong(song:Song){
+    fun playSong(song: Song) {
+        sendTextOverAVRCP(context, song.title, song.artist.name)
         musicPlayedBarHandler.removeCallbacks(musicTimerRunnable)
-        NotificationBarController().createNotification(context, song, R.drawable.ic_pause_notification_bar)
-        if(!mediaPlayer.isPlaying){
+        NotificationBarController().createNotification(
+            context,
+            song,
+            R.drawable.ic_pause_notification_bar
+        )
+        if (!mediaPlayer.isPlaying) {
             mediaPlayer.reset()
         }
         mediaPlayer.setDataSource(song.preview)
@@ -58,9 +65,9 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
         appWidget.update()
     }
 
-    private fun updateSpentTime(){
-        if(mediaPlayer.isPlaying){
-            if(timeLeft != 0){
+    private fun updateSpentTime() {
+        if (mediaPlayer.isPlaying) {
+            if (timeLeft != 0) {
                 musicPlayedBarHandler.postDelayed(musicTimerRunnable, 1000)
                 timeSpent++
                 timeLeft--
@@ -69,7 +76,7 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
         }
     }
 
-    fun nextSong(){
+    fun nextSong() {
         resetMedaiPlayer()
         currentSongPosInTrackList = (currentSongPosInTrackList + 1) % currentTrackList!!.size
         currentSong = currentTrackList!![(currentSongPosInTrackList)]
@@ -78,11 +85,11 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
         musicPlayingUpdater?.updateMusicReader(timeSpent, timeLeft)
     }
 
-    fun previousSong(){
-        if(timeSpent >= 10){
+    fun previousSong() {
+        if (timeSpent >= 10) {
             resetMedaiPlayer()
             playSong(currentSong!!)
-        }else {
+        } else {
             resetMedaiPlayer()
             currentSongPosInTrackList = if (currentSongPosInTrackList - 1 < 0) {
                 currentTrackList!!.size - 1
@@ -94,118 +101,129 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
         }
     }
 
-    fun resetMedaiPlayer(){
+    fun resetMedaiPlayer() {
         stopSong()
         mediaPlayer.reset()
     }
 
-    fun setUpMediaPlayer(){
+    fun setUpMediaPlayer() {
         mediaPlayer.isLooping = false
         mediaPlayer.setVolume(0.5f, 0.5f)
-        mediaPlayer.setOnCompletionListener{
-            if(currentSongPosInTrackList == currentTrackList!!.size -1){
-                if(isLoopingOnAlbum){
+        mediaPlayer.setOnCompletionListener {
+            if (currentSongPosInTrackList == currentTrackList!!.size - 1) {
+                if (isLoopingOnAlbum) {
                     nextSong()
-                }else{
-                    currentSongPosInTrackList = (currentSongPosInTrackList + 1) % currentTrackList!!.size
+                } else {
+                    currentSongPosInTrackList =
+                        (currentSongPosInTrackList + 1) % currentTrackList!!.size
                     currentSong = currentTrackList!![(currentSongPosInTrackList)]
                     musicPlayingUpdater?.loadData()
                     musicPlayingUpdater?.updateMusicReader(0, 30)
                 }
-            }else{
+            } else {
                 this.nextSong()
             }
             isEndOfSongObservable.value = true
         }
     }
 
-    fun playSongAgain(){
+    fun playSongAgain() {
         mediaPlayer.start()
         updateSpentTime()
-        NotificationBarController().createNotification(context, currentSong!!, R.drawable.ic_pause_notification_bar)
+        NotificationBarController().createNotification(
+            context,
+            currentSong!!,
+            R.drawable.ic_pause_notification_bar
+        )
         appWidget.update()
     }
 
-    fun pauseSong(){
+    fun pauseSong() {
         mediaPlayer.pause()
-        NotificationBarController().createNotification(context, currentSong!!, R.drawable.ic_play_notification_bar)
+        NotificationBarController().createNotification(
+            context,
+            currentSong!!,
+            R.drawable.ic_play_notification_bar
+        )
         appWidget.update()
     }
 
-    fun loopOnSong(loop: Boolean){
+    fun loopOnSong(loop: Boolean) {
         mediaPlayer.isLooping = loop
     }
 
-    fun loopOnAlbum(){
+    fun loopOnAlbum() {
         isLoopingOnAlbum = true
     }
 
-    fun disableLoop(){
+    fun disableLoop() {
         isLoopingOnAlbum = false
     }
 
-    private fun startSong(){
+    private fun startSong() {
         timeSpent = 0
         timeLeft = 30
         mediaPlayer.start()
     }
 
-    private fun stopSong(){
+    private fun stopSong() {
         mediaPlayer.stop()
     }
 
     // Channel notification
-    fun createChannel(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val notificatiionChannel = NotificationChannel(NotificationBarController.CHANNEL_ID,
-                "Deezer_Player", NotificationManager.IMPORTANCE_LOW)
+    fun createChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificatiionChannel = NotificationChannel(
+                NotificationBarController.CHANNEL_ID,
+                "Deezer_Player", NotificationManager.IMPORTANCE_LOW
+            )
 
             notificationManager = context.getSystemService(NotificationManager::class.java)!!
             notificationManager.createNotificationChannel(notificatiionChannel)
         }
     }
 
-    fun cancelAll(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    fun cancelAll() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.cancelAll()
         }
     }
 
 
     // Getters and Setters
-    fun getMediaPlayer(): MediaPlayer{
+    fun getMediaPlayer(): MediaPlayer {
         return mediaPlayer
     }
 
-    fun getCurrentSong(): Song?{
+    fun getCurrentSong(): Song? {
         return currentSong
     }
 
-    fun setCurrentSong(s: Song){
+    fun setCurrentSong(s: Song) {
         currentSong = s
     }
 
-    fun getCurrentCover(): String?{
+    fun getCurrentCover(): String? {
         return currentAlbumCover
     }
 
-    fun getCurrentSmallCover(): String?{
+    fun getCurrentSmallCover(): String? {
         return currentAlbumCoverSmall
     }
 
-    fun setCurrentCover(s: String){
+    fun setCurrentCover(s: String) {
         currentAlbumCover = s
     }
 
-    fun setCurrentSmallCover(s: String){
+    fun setCurrentSmallCover(s: String) {
         currentAlbumCoverSmall = s
     }
 
-    fun setTrackList(trackList: List<Song>){
+    fun setTrackList(trackList: List<Song>) {
         currentTrackList = trackList
     }
 
-    fun setCurrentSongPos(position: Int){
+    fun setCurrentSongPos(position: Int) {
         currentSongPosInTrackList = position
     }
 
@@ -217,13 +235,21 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
     override fun onSongPlay() {
         mediaPlayer.start()
         updateSpentTime()
-        NotificationBarController().createNotification(context, currentSong!!, R.drawable.ic_pause_notification_bar)
+        NotificationBarController().createNotification(
+            context,
+            currentSong!!,
+            R.drawable.ic_pause_notification_bar
+        )
         isEndOfSongObservable.value = true
     }
 
     override fun onSongPause() {
         mediaPlayer.pause()
-        NotificationBarController().createNotification(context, currentSong!!, R.drawable.ic_play_notification_bar)
+        NotificationBarController().createNotification(
+            context,
+            currentSong!!,
+            R.drawable.ic_play_notification_bar
+        )
         isEndOfSongObservable.value = true
     }
 
@@ -246,5 +272,29 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
         }
     }
 
+    private fun sendTextOverAVRCP(
+        context: Context,
+        songTitle: String,
+        artistName: String
+    ) {
+        val mediaSession = MediaSession(context, "Deezer")
+        val state = PlaybackState.Builder()
+            .setActions(
+                PlaybackState.ACTION_PLAY or PlaybackState.ACTION_PLAY_PAUSE or
+                        PlaybackState.ACTION_PLAY_FROM_MEDIA_ID or PlaybackState.ACTION_PAUSE or
+                        PlaybackState.ACTION_SKIP_TO_NEXT or PlaybackState.ACTION_SKIP_TO_PREVIOUS
+            )
+            .setState(PlaybackState.STATE_PLAYING, 1, 1f, SystemClock.elapsedRealtime())
+            .build()
 
+        val metadata = MediaMetadata.Builder()
+            .putString(MediaMetadata.METADATA_KEY_TITLE, songTitle)
+            .putString(MediaMetadata.METADATA_KEY_ARTIST, artistName)
+            .putString(MediaMetadata.METADATA_KEY_GENRE, "")
+            .build()
+
+        mediaSession.isActive = true
+        mediaSession.setMetadata(metadata)
+        mediaSession.setPlaybackState(state)
+    }
 }

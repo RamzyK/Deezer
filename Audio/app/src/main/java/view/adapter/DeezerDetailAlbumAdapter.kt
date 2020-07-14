@@ -9,13 +9,14 @@ import com.example.deezer.R
 import network.model.tracklist.Song
 import utils.OnSongClicked
 
-class DeezerDetailAlbumAdapter(clickListener: OnSongClicked) : RecyclerView.Adapter<DeezerDetailAlbumAdapter.TrackListSongViewHolder>() {
-    var songsList : List<Song>? = null
+class DeezerDetailAlbumAdapter(clickListener: OnSongClicked) :
+    RecyclerView.Adapter<DeezerDetailAlbumAdapter.TrackListSongViewHolder>() {
+    var songsList: List<Song>? = null
         set(value) {
             field = value
             notifyDataSetChanged()
         }
-    private lateinit var layoutInflater : LayoutInflater
+    private lateinit var layoutInflater: LayoutInflater
     private var listener = clickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackListSongViewHolder {
@@ -25,7 +26,7 @@ class DeezerDetailAlbumAdapter(clickListener: OnSongClicked) : RecyclerView.Adap
     }
 
     override fun getItemCount(): Int {
-        if(songsList == null){
+        if (songsList == null) {
             return 0
         }
         return songsList!!.size
@@ -42,16 +43,16 @@ class DeezerDetailAlbumAdapter(clickListener: OnSongClicked) : RecyclerView.Adap
         private val songArtistNameTv = itemView.findViewById<TextView>(R.id.artist_name_on_song_tv)
         //private val favSongIv = itemView.findViewById<ImageView>(R.id.fav_image_view)
 
-        fun bind(song: Song, pos: Int, listener: OnSongClicked){
+        fun bind(song: Song, pos: Int, listener: OnSongClicked) {
             songPositionTv.text = (pos + 1).toString()
             songNameTv.text = song.title_short
             songArtistNameTv.text = song.artist.name
 
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 listener.trackListSongClicked(song, pos)
             }
 
-            itemView.setOnLongClickListener{
+            itemView.setOnLongClickListener {
                 listener.trackLIstSongLongClicker(song, pos)
                 true
             }

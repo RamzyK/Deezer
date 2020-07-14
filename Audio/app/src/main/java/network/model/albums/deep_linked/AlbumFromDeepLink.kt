@@ -29,4 +29,4 @@ data class AlbumFromDeepLink(
     val tracklist: String,
     val type: String,
     val upc: String
-):Serializable
+) : Serializable

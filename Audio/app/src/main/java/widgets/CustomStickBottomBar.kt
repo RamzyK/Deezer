@@ -15,7 +15,7 @@ class CustomStickBottomBar(context: Context, attrs: AttributeSet) : LinearLayout
     private var songNameTV: TextView
     private var playPauseIv: ImageView
 
-    private var attributes : TypedArray
+    private var attributes: TypedArray
 
 
     init {

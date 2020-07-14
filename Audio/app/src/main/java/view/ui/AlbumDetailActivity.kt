@@ -24,7 +24,6 @@ import widgets.CustomStickBottomBar
 
 
 class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
-    // List qui s'affiche à l'écran dans chaque page de détail d'album
     private lateinit var currentPageTrackList: List<Song>
 
     private val deezerMediaPlayer = DeezerMediaPlayer
@@ -73,10 +72,10 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
         setUpBottomStickBar()
     }
 
-    private fun bindViews(){
+    private fun bindViews() {
         intent?.let {
             albums = it.getSerializableExtra("album_detail") as Albums
-            it.getStringExtra("songId")?.let{ id ->
+            it.getStringExtra("songId")?.let { id ->
                 songIdToPlay = id
             }
         }
@@ -96,7 +95,7 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
         bottomBarNextSongIv = findViewById(R.id.bottom_sticky_bar_next_btn)
     }
 
-    private fun setUpViews(){
+    private fun setUpViews() {
         artistNameTv.text = albums.artist.name
         albumTitleTv.text = albums.title
         Glide.with(this)
@@ -105,24 +104,24 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
             .placeholder(R.drawable.default_cover_art)
             .error(R.drawable.default_cover_art)
             .into(albumCoverIv)
-        if(albums.explicit_lyrics){
+        if (albums.explicit_lyrics) {
             albumIsExplicitTv.visibility = View.VISIBLE
-        }else{
+        } else {
             albumIsExplicitTv.visibility = View.INVISIBLE
         }
         albumReleaseDateTv.text = albums.release_date
         setUpListSongsRv()
     }
 
-    private fun setUpListSongsRv(){
+    private fun setUpListSongsRv() {
         this.deezerDetailAlbumAdapter = DeezerDetailAlbumAdapter(this)
         trackListSongsListRv.layoutManager = LinearLayoutManager(this)
         trackListSongsListRv.adapter = deezerDetailAlbumAdapter
     }
 
-    private fun setUpBottomStickBar(){
+    private fun setUpBottomStickBar() {
         val currentSong = DeezerMediaPlayer.getCurrentSong()
-        if(currentSong != null){
+        if (currentSong != null) {
             Glide.with(bottomBarCoverIv)
                 .load(DeezerMediaPlayer.getCurrentSmallCover())
                 .centerCrop()
@@ -133,74 +132,76 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
             bottomBar.visibility = View.VISIBLE
             bottomBarSongNameTv.text = deezerMediaPlayer.getCurrentSong()!!.title_short
             bottomBarArtistNameTv.text = deezerMediaPlayer.getCurrentSong()!!.artist.name
-            if(deezerMediaPlayer.getMediaPlayer().isPlaying){
+            if (deezerMediaPlayer.getMediaPlayer().isPlaying) {
                 bottomBarPlayPauseIv.setImageResource(R.drawable.ic_white_pause_48)
-            }else{
+            } else {
                 bottomBarPlayPauseIv.setImageResource(R.drawable.ic_play_white_bottom_bar)
             }
-        }else{
+        } else {
             bottomBar.visibility = View.INVISIBLE
         }
     }
 
-    private fun setViewModel(){
+    private fun setViewModel() {
         songsViewModel = ViewModelProviders.of(this).get(AlbumDetailViewModel::class.java)
         songsViewModel.context = this
     }
 
-    private fun setObservers(){
+    private fun setObservers() {
         songsViewModel.getAllTracks().observe(this, Observer {
-            if(it!= null){
+            if (it != null) {
                 currentPageTrackList = it.data
                 deezerDetailAlbumAdapter.songsList = it.data
-                if(songIdToPlay != ""){
+
+                if (songIdToPlay != "") { // Deep link start song
                     it.data.map { s ->
-                        if(s.id == songIdToPlay.toInt()) {
+                        if (s.id == songIdToPlay.toInt()) {
                             val song = it.data[s.track_position - 1]
                             trackListSongClicked(song, s.track_position - 1)
                         }
                     }
                 }
-            }else{
-                Toast.makeText(context, "Une erreur est survenue !", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(context, getString(R.string.all_tracks_get_error), Toast.LENGTH_LONG)
+                    .show()
             }
         })
 
         deezerMediaPlayer.isEndOfSongObservable.observe(this, Observer {
-            if(!this.isDestroyed){
+            if (!this.isDestroyed) {
                 setUpBottomStickBar()
             }
         })
     }
 
-    private fun setListeners(){
-        bottomBarPlayPauseIv.setOnClickListener{
-            if(deezerMediaPlayer.getMediaPlayer().isPlaying){
+    private fun setListeners() {
+        bottomBarPlayPauseIv.setOnClickListener {
+            if (deezerMediaPlayer.getMediaPlayer().isPlaying) {
                 deezerMediaPlayer.pauseSong()
                 bottomBarPlayPauseIv.setImageResource(R.drawable.ic_play_white_bottom_bar)
-            }else{
+            } else {
                 deezerMediaPlayer.playSongAgain()
                 bottomBarPlayPauseIv.setImageResource(R.drawable.ic_white_pause_48)
             }
         }
 
-        bottomBarPreviousSongIv.setOnClickListener{
+        bottomBarPreviousSongIv.setOnClickListener {
             deezerMediaPlayer.previousSong()
             setUpBottomStickBar()
         }
 
-        bottomBarNextSongIv.setOnClickListener{
+        bottomBarNextSongIv.setOnClickListener {
             deezerMediaPlayer.nextSong()
             setUpBottomStickBar()
         }
 
-        bottomBar.setOnClickListener{
+        bottomBar.setOnClickListener {
             showMusicNavigationController()
         }
 
     }
 
-    private fun showMusicNavigationController(){
+    private fun showMusicNavigationController() {
         startActivity(Intent(context, MusicNavigationActivity::class.java))
     }
 
@@ -211,7 +212,7 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
         deezerMediaPlayer.setCurrentSong(song)
         deezerMediaPlayer.setCurrentSongPos(pos)
         deezerMediaPlayer.setTrackList(currentPageTrackList) // Devient la liste globale à l'écoute
-        if(deezerMediaPlayer.getMediaPlayer().isPlaying){
+        if (deezerMediaPlayer.getMediaPlayer().isPlaying) {
             deezerMediaPlayer.resetMedaiPlayer()
         }
         deezerMediaPlayer.playSong(song)
@@ -222,12 +223,17 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
         try {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Deezer")
-            var shareMessage = "\nÉcoute ce son sur Deezer, il est vraiment super ! \n\n"
-            val songId = "/" + albums.id + "/" + song.id
-            shareMessage = shareMessage + "https://api.deezer.com" + songId
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+            var shareMessage = getString(R.string.share_message_header)
+            val songId = String.format(getString(R.string.song_link), albums.id, song.id)
+            shareMessage = shareMessage + getString(R.string.deep_link_host) + songId
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
-            startActivity(Intent.createChooser(shareIntent, "Comment voulez-vous partager " + song.title_short + "avec vos proche ?"))
+            startActivity(
+                Intent.createChooser(
+                    shareIntent,
+                    String.format(getString(R.string.share_message_content), song.title_short)
+                )
+            )
         } catch (e: Exception) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
         }

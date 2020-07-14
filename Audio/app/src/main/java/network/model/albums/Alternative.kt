@@ -20,4 +20,4 @@ data class Alternative(
     val title: String,
     val tracklist: String,
     val type: String
-): Serializable
+) : Serializable

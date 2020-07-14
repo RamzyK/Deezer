@@ -18,4 +18,27 @@
     <string name="next_song_icon">Next song icon</string>
     <string name="album_cell_artist_name_placeholder">ALPHA WANN</string>
     <string name="single_text">Single</string>
+    <string name="configuration_menu">Configuration</string>
+    <string name="not_connected_bluetooth_tv">Not connected</string>
+    <string name="config_btn">Configurer le volume</string>
+    <string name="connected_indicator">Connected</string>
+    <string name="not_connected_indicator">Not connected</string>
+    <string name="indicative_text_tv">Referez-vous à l\'écran sur l\'enceinte</string>
+    <string name="share_message_header">\nÉcoute ce son sur Deezer, il est vraiment super ! \n\n</string>
+    <string name="deep_link_host">https://api.deezer.com</string>
+    <string name="song_link">/%1$d/%2$d</string>
+    <string name="share_message_content">Comment voulez-vous partager \"%1$s\" avec vos proche ?</string>
+    <string name="shuffle">Shuffle</string>
+    <string name="previous_song">Previous song</string>
+    <string name="pause_play_song">Pause/Play song</string>
+    <string name="next_song">Next song</string>
+    <string name="loop">Loop</string>
+    <string name="song_cover">Song cover</string>
+    <string name="all_tracks_get_error">Une erreur est survenue !</string>
+    <string name="indispo_album_error">Album momentanément indisponible</string>
+    <string name="config_sent_message">Config envoyée!</string>
+
+    <string name="template_time_less_ten">0:0%1$d</string>
+    <string name="template_time_more_ten">0:%1$d</string>
+
 </resources>
