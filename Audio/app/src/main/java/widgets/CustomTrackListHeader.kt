@@ -9,7 +9,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.deezer.R
 
-class CustomTrackListHeader (context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
+class CustomTrackListHeader(context: Context, attrs: AttributeSet) :
+    ConstraintLayout(context, attrs) {
 
     private var coverIV: ImageView
     private var artistNameTV: TextView
@@ -17,7 +18,7 @@ class CustomTrackListHeader (context: Context, attrs: AttributeSet) : Constraint
     private var isAlbumExplicit = false
     private var explicitTV: TextView
     private var albumReleaseDateYv: TextView
-    private var attributes : TypedArray
+    private var attributes: TypedArray
 
 
     init {
@@ -39,10 +40,11 @@ class CustomTrackListHeader (context: Context, attrs: AttributeSet) : Constraint
         coverIV.setImageDrawable(attributes.getDrawable(R.styleable.CustomTrackListHeader_cover))
         artistNameTV.text = attributes.getString(R.styleable.CustomTrackListHeader_artist)
         albumNameTV.text = attributes.getString(R.styleable.CustomTrackListHeader_album)
-        albumReleaseDateYv.text =  attributes.getString(R.styleable.CustomTrackListHeader_release_date)
+        albumReleaseDateYv.text =
+            attributes.getString(R.styleable.CustomTrackListHeader_release_date)
         if (isAlbumExplicit) {
-           explicitTV.visibility = View.VISIBLE
-        }else{
+            explicitTV.visibility = View.VISIBLE
+        } else {
             explicitTV.visibility = View.INVISIBLE
         }
 

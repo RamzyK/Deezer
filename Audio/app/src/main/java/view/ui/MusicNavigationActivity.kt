@@ -1,11 +1,11 @@
 package view.ui
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.deezer.R
@@ -45,7 +45,7 @@ class MusicNavigationActivity : AppCompatActivity(), OnMusicIsPlaying {
 
     }
 
-    private fun setViews(){
+    private fun setViews() {
         albumCoverIv = findViewById(R.id.music_nav_album_cover_iv)
         songNameTv = findViewById(R.id.music_nav_song_name_tv)
         artistNameTv = findViewById(R.id.music_nav_artst_name_tv)
@@ -62,23 +62,23 @@ class MusicNavigationActivity : AppCompatActivity(), OnMusicIsPlaying {
     }
 
 
-    private fun setUpData(){
+    private fun setUpData() {
         seekBar.max = 30
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             seekBar.setProgress(deezerMediaPlayer.timeSpent, true)
-        }else{
+        } else {
             seekBar.progress = deezerMediaPlayer.timeSpent
         }
-        if(deezerMediaPlayer.getMediaPlayer().isPlaying){
+        if (deezerMediaPlayer.getMediaPlayer().isPlaying) {
             pausePlaySongIv.setImageResource(R.drawable.ic_pause_notification_bar)
-        }else{
+        } else {
             pausePlaySongIv.setImageResource(R.drawable.ic_play_notification_bar)
         }
         loadSongData()
     }
 
-    private fun loadSongData(){
+    private fun loadSongData() {
         val currentAlbumCover = deezerMediaPlayer.getCurrentCover()
         Glide.with(albumCoverIv)
             .load(currentAlbumCover)
@@ -89,64 +89,65 @@ class MusicNavigationActivity : AppCompatActivity(), OnMusicIsPlaying {
             .into(albumCoverIv)
         songNameTv.text = deezerMediaPlayer.getCurrentSong()!!.title_short
         artistNameTv.text = deezerMediaPlayer.getCurrentSong()!!.artist.name
-        if(deezerMediaPlayer.getMediaPlayer().isPlaying){
+        if (deezerMediaPlayer.getMediaPlayer().isPlaying) {
             pausePlaySongIv.setImageResource(R.drawable.ic_pause_notification_bar)
-        }else{
+        } else {
             pausePlaySongIv.setImageResource(R.drawable.ic_play_notification_bar)
         }
     }
 
-    private fun setListeners(){
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+    private fun setListeners() {
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                if(p2){
+                if (p2) {
                     deezerMediaPlayer.getMediaPlayer().seekTo(p1)
                 }
             }
+
             override fun onStartTrackingTouch(p0: SeekBar?) {}
             override fun onStopTrackingTouch(p0: SeekBar?) {}
         })
 
-        previousSongIv.setOnClickListener{
+        previousSongIv.setOnClickListener {
             deezerMediaPlayer.previousSong()
             loadSongData()
         }
 
-        nextSongIv.setOnClickListener{
+        nextSongIv.setOnClickListener {
             deezerMediaPlayer.nextSong()
             loadSongData()
         }
 
-        pausePlaySongIv.setOnClickListener{
-            if(deezerMediaPlayer.getMediaPlayer().isPlaying){
+        pausePlaySongIv.setOnClickListener {
+            if (deezerMediaPlayer.getMediaPlayer().isPlaying) {
                 deezerMediaPlayer.pauseSong()
                 pausePlaySongIv.setImageResource(R.drawable.ic_play_notification_bar)
-            }else{
+            } else {
                 deezerMediaPlayer.playSongAgain()
                 pausePlaySongIv.setImageResource(R.drawable.ic_pause_notification_bar)
             }
         }
 
-        shuffleIv.setOnClickListener{
+        shuffleIv.setOnClickListener {
 
         }
 
-        repeatMusicIv.setOnClickListener{
-            if(!repeatingIsEnabled){
+        repeatMusicIv.setOnClickListener {
+            if (!repeatingIsEnabled) {
                 repeatingIsEnabled = !repeatingIsEnabled
                 repeatingAlbum = !repeatingAlbum
                 // Repetition de tout l'album
                 repeatMusicIv.setImageResource(R.drawable.ic_repeat_selected)
                 deezerMediaPlayer.loopOnAlbum()
                 deezerMediaPlayer.loopOnSong(false)
-            }else{
+            } else {
                 // Repetion deja active
-                if(!repeatingSong){
+                if (!repeatingSong) {
                     // Repetition du son desactivée alors on l'active
                     repeatingSong = !repeatingSong
                     repeatMusicIv.setImageResource(R.drawable.ic_repeat_one_time_selected)
                     deezerMediaPlayer.loopOnSong(true)
-                }else{
+                } else {
                     repeatMusicIv.setImageResource(R.drawable.ic_repeat_unselected)
                     repeatingIsEnabled = !repeatingIsEnabled
                     repeatingAlbum = !repeatingAlbum
@@ -158,19 +159,30 @@ class MusicNavigationActivity : AppCompatActivity(), OnMusicIsPlaying {
         }
     }
 
-
     override fun updateMusicReader(musicTimePlayed: Int, musicTimeLeft: Int) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             seekBar.setProgress(musicTimePlayed, true)
-        }else{
+        } else {
             seekBar.progress = musicTimePlayed
         }
-        if(musicTimePlayed < 10) timeSpentTv.text = "0:0$musicTimePlayed"  else timeSpentTv.text = "0:$musicTimePlayed"
-        if(musicTimeLeft < 10) timeLeftTv.text =  "0:0$musicTimeLeft" else timeLeftTv.text =  "0:$musicTimeLeft"
+        val timeLessThanTen = getString(R.string.template_time_less_ten)
+        val timeMoreThanTen = getString(R.string.template_time_more_ten)
+        if (musicTimePlayed < 10) {
+            timeSpentTv.text = String.format(timeLessThanTen, musicTimePlayed)
+        } else {
+            timeSpentTv.text =
+                String.format(timeMoreThanTen, musicTimePlayed)
+        }
+        if (musicTimeLeft < 10) {
+            timeLeftTv.text = String.format(timeLessThanTen, musicTimeLeft)
+        } else {
+            timeLeftTv.text =
+                String.format(timeMoreThanTen, musicTimeLeft)
+        }
     }
 
     override fun loadData() {
-        if(!isDestroyed)
+        if (!isDestroyed)
             loadSongData()
     }
 

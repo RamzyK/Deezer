@@ -3,7 +3,7 @@ package network.model.albums
 import network.model.Artist
 import java.io.Serializable
 
- class Albums(
+class Albums(
     val artist: Artist,
     val available: Boolean = false,
     val alternative: Alternative? = null,
@@ -22,4 +22,4 @@ import java.io.Serializable
     val title: String,
     val tracklist: String,
     val type: String = ""
-): Serializable
+) : Serializable

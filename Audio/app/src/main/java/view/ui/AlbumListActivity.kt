@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -75,7 +74,7 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.getItemId()) {
+        when (item.itemId) {
             R.id.action -> {
                 val configIntent =  Intent(this, BluetoothConfigActivity::class.java)
                 startActivity(configIntent)
@@ -197,7 +196,7 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
         if(album.available){
             launchNextScreen(context, album)
         }else{
-            CustomToast(this, "Album momentanément indisponible").showCustomToast(type)
+            CustomToast(this, getString(R.string.indispo_album_error)).showCustomToast(type)
         }
     }
 

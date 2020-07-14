@@ -12,22 +12,26 @@ import com.example.deezer.R
 import network.model.albums.Albums
 import utils.OnItemClicked
 
-class DeezerAlbumAdapter(clickListener: OnItemClicked) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val ALBUM = 0
-    private val SINGLE = 1
+class DeezerAlbumAdapter(clickListener: OnItemClicked) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var albumList : List<Albums>? = null
+    companion object {
+        private const val ALBUM = 0
+        private const val SINGLE = 1
+    }
+
+    var albumList: List<Albums>? = null
         set(value) {
             field = value
             notifyDataSetChanged()
         }
-    private lateinit var layoutInflater : LayoutInflater
+    private lateinit var layoutInflater: LayoutInflater
     private var listener = clickListener
 
 
     override fun getItemViewType(position: Int): Int {
-        if(albumList != null){
-            when(albumList!![position].record_type){
+        if (albumList != null) {
+            when (albumList!![position].record_type) {
                 "album" -> return ALBUM
                 "single" -> return SINGLE
             }
@@ -36,7 +40,7 @@ class DeezerAlbumAdapter(clickListener: OnItemClicked) : RecyclerView.Adapter<Re
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-         when (viewType) {
+        when (viewType) {
             ALBUM -> {
                 layoutInflater = LayoutInflater.from(parent.context)
                 val albumView = layoutInflater.inflate(R.layout.cell_album, parent, false)
@@ -56,23 +60,25 @@ class DeezerAlbumAdapter(clickListener: OnItemClicked) : RecyclerView.Adapter<Re
     }
 
     override fun getItemCount(): Int {
-        if(albumList == null){
+        if (albumList == null) {
             return 0
         }
         return albumList!!.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(albumList!![position].record_type){
+        when (albumList!![position].record_type) {
             "album" -> {
                 (holder as AlbumViewHolder).bind(album = albumList!![position], listener = listener)
             }
             "single" -> {
-                (holder as SingleViewHolder).bind(single = albumList!![position], listener = listener)
+                (holder as SingleViewHolder).bind(
+                    single = albumList!![position],
+                    listener = listener
+                )
             }
         }
     }
-
 
 
     class AlbumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -81,7 +87,7 @@ class DeezerAlbumAdapter(clickListener: OnItemClicked) : RecyclerView.Adapter<Re
         private val albumName = itemView.findViewById<TextView>(R.id.album_name_tv)
         private val albumArtistName = itemView.findViewById<TextView>(R.id.album_artist_name_tv)
 
-        fun bind(album: Albums, listener: OnItemClicked){
+        fun bind(album: Albums, listener: OnItemClicked) {
             val url = album.cover_medium
             albumName.text = album.title
             albumArtistName.text = album.artist.name
@@ -98,27 +104,26 @@ class DeezerAlbumAdapter(clickListener: OnItemClicked) : RecyclerView.Adapter<Re
         }
     }
 
-    class SingleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class SingleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val albumCover = itemView.findViewById<ImageView>(R.id.single_album_cover_iv)
-        private val albumName = itemView.findViewById<TextView>(R.id.single_album_name_tv)
-        private val albumArtistName = itemView.findViewById<TextView>(R.id.single_artist_name_tv)
+        private val singleCover = itemView.findViewById<ImageView>(R.id.single_album_cover_iv)
+        private val singleName = itemView.findViewById<TextView>(R.id.single_album_name_tv)
+        private val singleArtistName = itemView.findViewById<TextView>(R.id.single_artist_name_tv)
 
-        fun bind(single: Albums, listener: OnItemClicked){
+        fun bind(single: Albums, listener: OnItemClicked) {
             val url = single.cover
-            albumName.text = single.title
-            albumArtistName.text = single.artist.name
+            singleName.text = single.title
+            singleArtistName.text = single.artist.name
             Glide.with(itemView)
                 .load(url)
                 .centerCrop()
                 .placeholder(R.drawable.default_cover_art)
                 .error(R.drawable.ic_launcher_foreground)
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .into(albumCover)
+                .into(singleCover)
             itemView.setOnClickListener {
                 listener.albumClicked(single, 1)
             }
         }
     }
-
 }

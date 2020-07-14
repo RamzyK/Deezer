@@ -9,22 +9,22 @@ import network.model.albums.Albums
 import network.model.tracklist.TrackListSongs
 
 class AlbumDetailViewModel : ViewModel() {
-    lateinit var context : AppCompatActivity
-    var trackListSongs : MutableLiveData<TrackListSongs> = MutableLiveData()
+    lateinit var context: AppCompatActivity
+    var trackListSongs: MutableLiveData<TrackListSongs> = MutableLiveData()
     val deezerService = DeezerClient
 
     fun getTrackList(album: Albums) {
         deezerService.deezerAlbumsTrackList.observe(context, Observer {
             trackListSongs.value = it
         })
-        if(album.alternative != null){
+        if (album.alternative != null) {
             deezerService.getAllSongsFromAlternative(album.alternative)
-        }else{
+        } else {
             deezerService.getAllSongs(album)
         }
     }
 
-    fun getAllTracks() : MutableLiveData<TrackListSongs>{
+    fun getAllTracks(): MutableLiveData<TrackListSongs> {
         return trackListSongs
     }
 }

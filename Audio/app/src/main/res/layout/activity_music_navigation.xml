@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark"
@@ -14,7 +15,8 @@
         android:layout_width="330dp"
         android:layout_height="330dp"
         android:layout_marginTop="50dp"
-        android:src="@drawable/default_cover_art"/>
+        android:src="@drawable/default_cover_art"
+        android:contentDescription="@string/song_cover" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +30,7 @@
             android:id="@+id/music_nav_song_name_tv"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Locked Up"
+            android:text="@string/song_name_placeholder"
             android:maxLines="1"
             android:ellipsize="end"
             android:textColor="@color/white"
@@ -40,7 +42,7 @@
             android:id="@+id/music_nav_artst_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Akon, Booba"
+            android:text="@string/artist_tv_placeholder"
             android:maxLines="1"
             android:ellipsize="end"
             android:textSize="20sp"
@@ -62,7 +64,7 @@
                 android:id="@+id/time_spent_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0:00"
+                android:text="@string/song_duration_placeholder"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"/>
@@ -75,7 +77,7 @@
                 android:id="@+id/time_left_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3:00"
+                android:text="@string/song_duration_placeholder"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"/>
@@ -96,7 +98,8 @@
             android:id="@+id/shuffle_nav_music_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_shuffle"/>
+            android:src="@drawable/ic_shuffle"
+            android:contentDescription="@string/shuffle" />
         <Space
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -106,7 +109,8 @@
             android:id="@+id/previous_nav_music_iv"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_previous_music_nav"/>
+            android:src="@drawable/ic_previous_music_nav"
+            android:contentDescription="@string/previous_song"/>
         <Space
             android:layout_weight="0.1"
             android:layout_height="wrap_content"
@@ -116,7 +120,8 @@
             android:id="@+id/play_music_nav_iv"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_pause_notification_bar"/>
+            android:src="@drawable/ic_pause_notification_bar"
+            android:contentDescription="@string/pause_play_song"/>
 
         <Space
             android:layout_weight="0.1"
@@ -127,7 +132,8 @@
             android:id="@+id/next_music_nav_iv"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_next_music_nav"/>
+            android:src="@drawable/ic_next_music_nav"
+            android:contentDescription="@string/next_song"/>
 
         <Space
             android:layout_weight="1"
@@ -138,7 +144,8 @@
             android:id="@+id/repeat_music_nav_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_repeat_unselected"/>
+            android:src="@drawable/ic_repeat_unselected"
+            android:contentDescription="@string/loop"/>
 
     </LinearLayout>
 
