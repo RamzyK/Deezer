@@ -177,21 +177,26 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
 
     private fun launchNextScreen(context: Context, album: Albums) {
         val goToAlbumTrackList = Intent(context, AlbumDetailActivity::class.java)
-        goToAlbumTrackList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        goToAlbumTrackList.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        goToAlbumTrackList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        goToAlbumTrackList.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         goToAlbumTrackList.putExtra("album_detail", album)
         startActivity(goToAlbumTrackList)
     }
 
     private fun launchDetailAlbumFromLink(album: Albums, songToplay: String){
         val intent = Intent(this, AlbumDetailActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("album_detail", album)
         intent.putExtra("songId", songToplay)
         startActivity(intent)
     }
 
     private fun showMusicNavigationController(){
-        startActivity(Intent(context, MusicNavigationActivity::class.java))
+        val intent = Intent(context, MusicNavigationActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     override fun albumClicked(album: Albums, type: Int) {

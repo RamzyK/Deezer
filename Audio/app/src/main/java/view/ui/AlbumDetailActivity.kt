@@ -202,7 +202,10 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
     }
 
     private fun showMusicNavigationController() {
-        startActivity(Intent(context, MusicNavigationActivity::class.java))
+        val intent = Intent(context, MusicNavigationActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent)
     }
 
     override fun trackListSongClicked(song: Song, pos: Int) {
@@ -222,12 +225,15 @@ class AlbumDetailActivity : AppCompatActivity(), OnSongClicked {
     override fun trackLIstSongLongClicker(song: Song, pos: Int) {
         try {
             val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
             var shareMessage = getString(R.string.share_message_header)
             val songId = String.format(getString(R.string.song_link), albums.id, song.id)
             shareMessage = shareMessage + getString(R.string.deep_link_host) + songId
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+
             startActivity(
                 Intent.createChooser(
                     shareIntent,
