@@ -2,9 +2,7 @@ package media
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.media.MediaMetadata
@@ -15,7 +13,6 @@ import android.os.Build
 import android.os.Handler
 import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
-import com.bumptech.glide.Glide
 import com.example.deezer.R
 import media.notification_control.NotificationBarController
 import network.model.tracklist.Song

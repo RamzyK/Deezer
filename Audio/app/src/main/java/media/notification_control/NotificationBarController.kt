@@ -25,7 +25,7 @@ class NotificationBarController {
 
     private lateinit var notification: Notification
 
-    fun createNotification(context: Context, song: Song, cover_medium: String, cover_small: String, defaultPlayPauseIcon: Int) {
+    fun createNotification(context: Context, song: Song, defaultPlayPauseIcon: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager = NotificationManagerCompat.from(context)
             val albumIcon =
