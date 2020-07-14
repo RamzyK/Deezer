@@ -177,6 +177,8 @@ class AlbumListActivity : AppCompatActivity(), OnItemClicked {
 
     private fun launchNextScreen(context: Context, album: Albums) {
         val goToAlbumTrackList = Intent(context, AlbumDetailActivity::class.java)
+        goToAlbumTrackList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        goToAlbumTrackList.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         goToAlbumTrackList.putExtra("album_detail", album)
         startActivity(goToAlbumTrackList)
     }
