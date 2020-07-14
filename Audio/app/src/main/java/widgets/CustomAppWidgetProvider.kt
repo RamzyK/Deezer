@@ -53,7 +53,12 @@ class CustomAppWidgetProvider : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
+
+
         if (DeezerMediaPlayer.getCurrentSong() != null) {
+
+            update()
+
             when(intent.action) {
                 ACTION_PLAY_PAUSE ->
                     if (DeezerMediaPlayer.getMediaPlayer().isPlaying) {
