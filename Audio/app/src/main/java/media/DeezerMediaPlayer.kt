@@ -76,7 +76,6 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
         playSong(currentTrackList!![currentSongPosInTrackList])
         musicPlayingUpdater?.loadData()
         musicPlayingUpdater?.updateMusicReader(timeSpent, timeLeft)
-        appWidget.update()
     }
 
     fun previousSong(){
@@ -93,13 +92,11 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
             currentSong = currentTrackList!![currentSongPosInTrackList]
             playSong(currentTrackList!![currentSongPosInTrackList])
         }
-        appWidget.update()
     }
 
     fun resetMedaiPlayer(){
         stopSong()
         mediaPlayer.reset()
-        appWidget.update()
     }
 
     fun setUpMediaPlayer(){
@@ -120,7 +117,6 @@ object DeezerMediaPlayer : OnNotificationControllerTouched, BroadcastReceiver(){
             }
             isEndOfSongObservable.value = true
         }
-        appWidget.update()
     }
 
     fun playSongAgain(){
